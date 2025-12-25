@@ -12,4 +12,18 @@ class Wallet extends Model
     public function user(){
         return $this->belongsTo(User::class);
     }
+
+    public function decrementBalance(float $amount): void
+    {
+        if ($amount <= 0) {
+            throw new \InvalidArgumentException("eksi bakiye gönderemezsin.");
+        }
+
+        if ($this->balance < $amount) {
+            throw new \RuntimeException("bakiyeniz bu işlem içiin yetersiz.");
+        }
+
+        $this->decrement('balance', $amount);
+    }
+
 }

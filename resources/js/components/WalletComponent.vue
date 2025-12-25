@@ -32,18 +32,19 @@ const miktar = ref(0);
 const mesaj = ref('');
 
 const gonder = async () => {
+    mesaj.value = "İşlem yapılıyor...";
     try {
-        // Laravel web.php rotasına istek atar
         const response = await axios.post('/sendMoney', {
             wallet_number: iban.value,
             amount: miktar.value
         });
-
-        mesaj.value = response.data.message; // "Transfer başarılı" mesajı
-        iban.value = ''; // Inputu temizle
-        miktar.value = 0; // Inputu temizle
+        mesaj.value = response.data.message;
+        iban.value = '';
+        miktar.value = 0;
     } catch (error) {
-        mesaj.value = "Hata: " + error.response.data.message;
+        // Laravel hata mesajlarını daha detaylı yakala
+        const errorMsg = error.response?.data?.message || "Bir hata oluştu.";
+        mesaj.value = "Hata: " + errorMsg;
     }
 };
 </script>
