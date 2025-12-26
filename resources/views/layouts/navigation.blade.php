@@ -16,6 +16,18 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
                 </div>
+
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                <x-nav-link :href="route('wallet.index')" :active="request()->routeIs('wallet.index')">
+                    {{ __('Cüzdanım') }}
+                </x-nav-link>
+                </div>
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                <x-nav-link :href="route('money.transfer')" :active="request()->routeIs('money.transfer')">
+                    {{ __('Para Gönder') }}
+                </x-nav-link>
+                </div>
+
             </div>
 
             <!-- Settings Dropdown -->
@@ -63,6 +75,8 @@
             </div>
         </div>
     </div>
+
+
 
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">

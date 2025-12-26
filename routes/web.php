@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TransferController;
+use App\Http\Controllers\WalletController;
 
 
 /*
@@ -17,7 +18,7 @@ use App\Http\Controllers\TransferController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
 Route::get('/dashboard', function () {
@@ -28,6 +29,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::prefix('user')->group(function () {
+        Route::get('/wallet', [WalletController::class, 'index'])->name('wallet.index');
+        Route::get('/transfer', [WalletController::class, 'transfer'])->name('money.transfer');
+    });
+
 });
 
 Route::post('/sendMoney', [TransferController::class, 'sendMoney']);

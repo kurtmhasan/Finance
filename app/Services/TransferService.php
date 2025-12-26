@@ -32,6 +32,15 @@ class TransferService
             $senderWallet->decrementBalance($amount);
             // Bakiye ekleme
             $receiverWallet->increment('balance', $amount);
+            //transactions tablosuna log kaydı düşüyoruz
+               DB::table('transactions')->insert([
+                   'sender_id'  => $senderWallet->user_id,
+                   'receiver_id' => $receiverWallet->user_id,
+                   'type'       => 'transfer',
+                   'amount'     => $amount,
+                   'created_at' => now(),
+                   'updated_at' => now(),
+               ]);
             return true;
         });
     }
