@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TransferController;
 use App\Http\Controllers\WalletController;
+use App\Http\Controllers\InvestController;
 
 
 /*
@@ -34,9 +35,13 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::prefix('user')->group(function () {
         Route::get('/wallet', [WalletController::class, 'index'])->name('wallet.index');
+        Route::get('/invest', [InvestController::class, 'index'])->name('invest.index');
         Route::get('/transfer', [WalletController::class, 'transfer'])->name('money.transfer');
     });
+});
 
+Route::middleware(['auth'])->group(function () {
+    Route::get('/dashboard-data', [WalletController::class, 'showDashboardData']);
 });
 
 Route::post('/sendMoney', [TransferController::class, 'sendMoney']);

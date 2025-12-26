@@ -13,13 +13,18 @@
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
+                        {{ __('Ana sayfa') }}
                     </x-nav-link>
                 </div>
 
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                 <x-nav-link :href="route('wallet.index')" :active="request()->routeIs('wallet.index')">
-                    {{ __('Cüzdanım') }}
+                    {{ __('Varlıklarım') }}
+                </x-nav-link>
+                </div>
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                <x-nav-link :href="route('invest.index')" :active="request()->routeIs('invest.index')">
+                    {{ __('Yatırım Yap') }}
                 </x-nav-link>
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">

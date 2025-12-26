@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class WalletController extends Controller
@@ -12,7 +13,7 @@ class WalletController extends Controller
      */
     public function index(): View
     {
-        return view('wallet-page');
+        return view('investment-page');
     }
 
     /**
@@ -21,5 +22,15 @@ class WalletController extends Controller
     public function transfer(): View
     {
         return view('moneyTransfer-page');
+    }
+
+    public function showDashboardData(){
+        $user = Auth::user();
+        $wallet_number = $user->wallet->wallet_number;
+        $balance = $user->wallet->balance;
+        return response()->json([
+            'wallet_number' => $wallet_number,
+            'balance' => $balance
+        ]);
     }
 }

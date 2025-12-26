@@ -2,13 +2,6 @@
 </script>
 <template>
     <div class="bg-light min-vh-100">
-
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4 shadow-sm">
-            <div class="container">
-                <a class="navbar-brand fw-bold" href="#">Kdfsdfphp URT BAsfsdfsNK</a>
-            </div>
-        </nav>
-
         <div class="container">
             <div class="row">
                 <div class="col-md-6 mx-auto">
