@@ -9,7 +9,7 @@ use League\Csv\Reader;
 class ImportStocksMaster extends Command
 {
     protected $signature = 'import:stocks'; // Daha kısa ve standart bir isim
-    protected $description = 'Import BIST 100 stock symbols and names from CSV';
+    protected $description = 'Import BIST 100   stock symbols and names from CSV';
 
     public function handle()
     {

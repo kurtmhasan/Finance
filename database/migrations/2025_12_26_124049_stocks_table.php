@@ -15,7 +15,7 @@ return new class extends Migration
                 $table->id();
                 $table->foreignId('user_id')->constrained()->cascadeOnDelete();
                 $table->foreignId('investment_type_id')->constrained('investment_types');
-                $table->string('symbol', 10);
+                $table->foreignId('stocks_master_id')->constrained('stocks_master');
                 $table->timestamp('closed_at')->nullable();
                 $table->timestamps();
             });

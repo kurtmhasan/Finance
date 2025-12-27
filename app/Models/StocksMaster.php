@@ -10,4 +10,7 @@ class StocksMaster extends Model
     protected $table = 'stocks_master';
 
     protected $fillable = ['symbol', 'name'];
+    public function stocks(){
+        return $this->hasMany(Stock::class, 'stocks_master_id');
+    }
 }
