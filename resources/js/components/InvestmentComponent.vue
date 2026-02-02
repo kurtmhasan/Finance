@@ -1,4 +1,32 @@
 <script setup>
+import { ref, onMounted, onBeforeUnmount } from 'vue'
+import {
+    Chart,
+    ArcElement,
+    Tooltip,
+    Legend
+} from 'chart.js'
+
+Chart.register(ArcElement, Tooltip, Legend)
+
+const canvasRef = ref(null)
+let chart = null
+
+onMounted(() => {
+    chart = new Chart(canvasRef.value, {
+        type: 'pie',
+        data: {
+            labels: ['Nakit', 'Hisse', 'Kripto'],
+            datasets: [{
+                data: [30000, 50000, 20000]
+            }]
+        }
+    })
+})
+
+onBeforeUnmount(() => {
+    chart?.destroy()
+})
 </script>
 <template>
     <div class="bg-light min-vh-100">

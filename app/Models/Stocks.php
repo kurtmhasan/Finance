@@ -20,4 +20,7 @@ class Stocks extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public function trades(){
+        return $this->hasMany(StocksTrade::class, 'stock_id');
+    }
 }

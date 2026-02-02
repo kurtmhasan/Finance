@@ -25,6 +25,7 @@
 <script setup>
 import { ref } from 'vue';
 import axios from 'axios';
+import Swal from "sweetalert2";
 
 // Form verileri için basit değişkenler
 const iban = ref('');
@@ -32,19 +33,25 @@ const miktar = ref(0);
 const mesaj = ref('');
 
 const gonder = async () => {
-    mesaj.value = "İşlem yapılıyor...";
     try {
         const response = await axios.post('/sendMoney', {
             wallet_number: iban.value,
             amount: miktar.value
         });
-        mesaj.value = response.data.message;
-        iban.value = '';
-        miktar.value = 0;
+        Swal.fire({
+            icon: 'success',
+            title: 'Transfer Başarılı!',
+            text: `${response.data.message || 'Para transferi gerçekleşti.'}`,
+            confirmButtonText: 'Tamam',
+            confirmButtonColor: '#198754'
+        });
     } catch (error) {
-        // Laravel hata mesajlarını daha detaylı yakala
-        const errorMsg = error.response?.data?.message || "Bir hata oluştu.";
-        mesaj.value = "Hata: " + errorMsg;
+        Swal.fire({
+            icon: 'error',
+            title: 'Transfer Başarısız',
+            text: errorMsg,
+            confirmButtonText: 'Tamam'
+        });
     }
 };
 </script>

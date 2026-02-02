@@ -45,7 +45,10 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::post('/sendMoney', [TransferController::class, 'sendMoney']);
-Route::post('/getStockName', [InvestController::class, 'getStockName']);
 
+Route::middleware('auth')->group(function () {
+    Route::post('/getStockName', [InvestController::class, 'getStockName']);
+    Route::post('/buyStock', [InvestController::class, 'buyStock']);
+});
 
 require __DIR__.'/auth.php';

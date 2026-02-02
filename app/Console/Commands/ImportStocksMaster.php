@@ -28,8 +28,14 @@ class ImportStocksMaster extends Command
 
         foreach ($records as $row) {
             StocksMaster::updateOrCreate(
+            // 1. Parametre: Hangi kayda bakılacak?
                 ['symbol' => $row['symbol']],
-                ['name' => $row['name']]
+
+                // 2. Parametre: Ne güncellenecek veya eklenecek?
+                [
+                    'name' => $row['name'],
+                    'investment_type_id' => $row['investment_type_id']
+                ]
             );
         }
 

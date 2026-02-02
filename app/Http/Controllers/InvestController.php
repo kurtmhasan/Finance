@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Stocks;
 use App\Models\StocksMaster;
+use App\Models\StocksTrade;
+use App\Models\InvestmentType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -27,21 +29,39 @@ class InvestController extends Controller
         ]);
     }
 
-    public function buyStock(Request $request){
-        $userId = auth()->id() ?: 1;
+    public function buyStock(Request $request)
+    {
+        $userId = Auth::user()->id;
         $symbol = strtoupper($request->input('symbol'));
-        $master = StocksMaster::where('symbol', $symbol)->first();
+        $quantity = (int) $request->input('quantity');
 
-        if($master->id != Stocks::where('stocks_master_id', $master->id)->exists()){
-            $newStock = new Stocks();
-            $newStock->user_id = $userId;
-            $newStock->investment_type_id = 1;
-            $newStock->stocks_master_id = $master->id;
-            $newStock->save();
+        $master = StocksMaster::where('symbol', $symbol)->firstOrFail();
+        $stock = Stocks::where('stocks_master_id', $master->id)
+            ->where('user_id', $userId)
+            ->first();
+
+        if (!$stock) {
+            // yeni stok oluştur
+            $stock = new Stocks();
+            $stock->user_id = $userId;
+            $stock->investment_type_id = $master->investment_type_id;
+            $stock->stocks_master_id = $master->id;
+            $stock->quantity = $quantity;
+            $stock->save();
+        } else {
+            // mevcut stoku artır
+            $stock->quantity += $quantity;
+            $stock->save();
         }
-        // stock_trade sayfasını doldurcan
 
-
-
+        // trade kaydı
+        $trade = new StocksTrade();
+        $trade->user_id = $userId;
+        $trade->stock_id = $stock->id;
+        $trade->type = 'buy';
+        $trade->price = 50.00; // örnek
+        $trade->quantity = $quantity;
+        $trade->save();
     }
+
 }
