@@ -8,7 +8,7 @@ use App\Models\StocksTrade;
 use App\Models\InvestmentType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\Http;
 class InvestController extends Controller
 {
     public function index()
@@ -17,16 +17,12 @@ class InvestController extends Controller
     }
     public function getStockName(Request $request)
     {
-
-        $symbol = strtoupper($request->input('symbol'));
-        $master = StocksMaster::where('symbol', $symbol)->first();
-        if (!$master) {
-            return response()->json(['error' => 'Hisse bulunamadı'], 404);
+        $url = "http://127.0.0.1:8001/price/{$request->symbol}";
+        $master = Http::timeout(5)->get($url);
+        if ($master->successful()) {
+            $data = $master->json();
+            return response()->json($data);
         }
-
-        return response()->json([
-            'name' => $master->name
-        ]);
     }
 
     public function buyStock(Request $request)
@@ -34,6 +30,9 @@ class InvestController extends Controller
         $userId = Auth::user()->id;
         $symbol = strtoupper($request->input('symbol'));
         $quantity = (int) $request->input('quantity');
+
+        $scraperResponse = Http::get("http://127.0.0.1:8001/price/{$request->symbol}");
+        $actualPrice = $scraperResponse->json()['price'];
 
         $master = StocksMaster::where('symbol', $symbol)->firstOrFail();
         $stock = Stocks::where('stocks_master_id', $master->id)
@@ -59,7 +58,7 @@ class InvestController extends Controller
         $trade->user_id = $userId;
         $trade->stock_id = $stock->id;
         $trade->type = 'buy';
-        $trade->price = 50.00; // örnek
+        $trade->price = $actualPrice; // örnek
         $trade->quantity = $quantity;
         $trade->save();
     }
